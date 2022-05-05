@@ -15,13 +15,13 @@ const createIntern = async function (req, res) {
                 return res.status(400).send({ status: false, msg: "Mandatory field missing" })
             }
             let checkEmail = await internModel.findOne({ email: data.email })
-            if (checkEmail) return res.status(400).send({ msg: "Email already exist" })
+            if (checkEmail) return res.status(400).send({status:false, msg: "Email already exist" })
 
             if (!(/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(data.email))) {
                 return res.status(400).send({ status: false, message: 'email should be a valid email address' })
             }
             let checkMobile = await internModel.findOne({ mobile: data.mobile })
-            if (checkMobile) return res.status(400).send({ msg: "Mobile Number already exist" })
+            if (checkMobile) return res.status(400).send({ status: false,msg: "Mobile Number already exist" })
 
             if (!/^[0-9]{10}$/.test(mobile)) {
                 return res.status(400).send({ status: false, msg: "Enter a valid mobile number" })
