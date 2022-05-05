@@ -1,6 +1,7 @@
 const internModel = require('../Models/internModel')
 const mongoose = require('mongoose')
 const CollegeModel = require('../Models/CollegeModel')
+const { find } = require('../Models/internModel')
 
 
 const createIntern = async function (req, res) {
@@ -47,3 +48,33 @@ const createIntern = async function (req, res) {
 }
 
 module.exports.createIntern = createIntern
+
+const getInterns = async function(req,res){
+    try {
+       const collegeName = req.query.name
+       if(!collegeName){
+           return res.status(400).send({status:false, msg: "Please Enter the College Name"})
+       }
+   const find =await CollegeModel.findOne({name:collegeName})
+   if(!find){
+    return res.status(404).send({status:false, msg: "No College Found"}) 
+   }
+   const collegeId = find._id
+   const interns= await internModel.find({collegeId:collegeId}).select({name:1,email:1,mobile:1})
+   if(interns.length ==0){
+    return res.status(404).send({status:false, msg: "No Intern applied for internship at this college"})  
+   }
+   const collegeData ={
+       name: find.name,
+       fullName: find.fullName,
+       logoLink: find.logoLink,
+       interest: interns 
+   }
+    return res.status(200).send({status:true, data: collegeData})
+   
+    } catch (error) {
+       return res.status(500).send({status:false, msg: error.message}) 
+    }   
+   }
+
+module.exports.getInterns = getInterns
