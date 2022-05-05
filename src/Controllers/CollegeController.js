@@ -2,6 +2,7 @@ const collegeModel=require('../Models/CollegeModel')
 const mongoose=require('mongoose')
 
 const createCollege=async function (req,res){
+    try{
     let data=req.body
     if (Object.keys(data).length != 0) {
         if(data.name==undefined || data.fullName == undefined || data.logoLink== undefined || data.name.trim().length == 0
@@ -23,6 +24,9 @@ const createCollege=async function (req,res){
     }
     let savedDate = await collegeModel.create(data)
      res.status(201).send({ status: true, data: savedDate })
+}catch (error) {
+    return res.status(500).send({status:false, msg: error.message}) 
+ }  
 }
 
 module.exports.createCollege=createCollege

@@ -5,6 +5,7 @@ const { find } = require('../Models/internModel')
 
 
 const createIntern = async function (req, res) {
+    try{
     let data = req.body
     let mobile = data.mobile
     let ObjectId=data.collegeId
@@ -45,6 +46,9 @@ const createIntern = async function (req, res) {
     }
     let savedDate = await internModel.create(data)
     return res.status(201).send({ status: true, data: savedDate })
+}catch (error) {
+    return res.status(500).send({status:false, msg: error.message}) 
+ }  
 }
 
 module.exports.createIntern = createIntern
