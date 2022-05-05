@@ -10,7 +10,7 @@ const createCollege=async function (req,res){
        }
 
        let checkName = await collegeModel.findOne({ name: data.name })
-        if (checkName) return res.status(400).send({ msg: "College already exist" })
+        if (checkName) return res.status(400).send({status:false, msg: "College already exist" })
         
 
         if(! (/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(data.logoLink))){

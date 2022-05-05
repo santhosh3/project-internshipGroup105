@@ -59,11 +59,22 @@ const getInterns = async function(req,res){
    if(!find){
     return res.status(404).send({status:false, msg: "No College Found"}) 
    }
+    if(find.isDeleted==true){
+   
+       return res.status(404).send({status:false,msg:"The college data might be deleted"})
+   }
    const collegeId = find._id
+   const deleted =await internModel.findOne({collegeId:collegeId})
+   if(deleted.isDeleted==true){
+   
+    return res.status(404).send({status:false,msg:"No intern found"})
+}
    const interns= await internModel.find({collegeId:collegeId}).select({name:1,email:1,mobile:1})
+   
    if(interns.length ==0){
     return res.status(404).send({status:false, msg: "No Intern applied for internship at this college"})  
    }
+   
    const collegeData ={
        name: find.name,
        fullName: find.fullName,
