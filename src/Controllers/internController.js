@@ -27,9 +27,6 @@ const createIntern = async function (req, res) {
                 return res.status(400).send({ status: false, msg: "Enter a valid mobile number" })
             }
 
-            let checkName = await internModel.findOne({ name: data.name })
-            if (checkName) return res.status(400).send({ msg: "Name already exist" })
-
 
             if (!mongoose.Types.ObjectId.isValid(ObjectId)) {
                 return res.status(400).send({ status: false, msg: "Invalid CollegeId" });
