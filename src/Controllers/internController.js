@@ -52,7 +52,7 @@ module.exports.createIntern = createIntern
 
 const getInterns = async function (req, res) {
     try {
-        const collegeName = req.query.name
+        const collegeName = req.query.collegeName
         if (!collegeName) {
             return res.status(400).send({ status: false, msg: "Please Enter the College Name" })
         }
