@@ -26,7 +26,7 @@ const createIntern = async function (req, res) {
                 return res.status(400).send({ status: false, msg: "Enter a valid mobile number" })
             }
 
-            let  Name = await CollegeModel.findOne({name : data.collegeName})
+            let  Name = await CollegeModel.findOne({name : data.collegeName, isDeleted : false})
             if (!Name) return res.status(400).send({status : false, msg: "college not found"})
 
             data.collegeId = Name._id
