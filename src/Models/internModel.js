@@ -5,7 +5,6 @@ const internSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
-
     },
     email: {
         type: String,

@@ -7,10 +7,9 @@ const { find } = require('../Models/internModel')
 const createIntern = async function (req, res) {
     try {
         let data = req.body
-        let mobile = data.mobile
-        let ObjectId = data.collegeId
         if (Object.keys(data).length != 0) {
-            if (data.name == undefined || data.email == undefined || data.mobile == undefined || data.collegeId == undefined || data.name.trim().length == 0
+            const { email, mobile, collegeName } = data;
+            if (data.name == undefined || data.email == undefined || data.mobile == undefined || data.name.trim().length == 0
                 || data.email.trim().length == 0 || data.mobile.trim().length == 0) {
                 return res.status(400).send({ status: false, msg: "Mandatory field missing" })
             }
@@ -27,15 +26,10 @@ const createIntern = async function (req, res) {
                 return res.status(400).send({ status: false, msg: "Enter a valid mobile number" })
             }
 
+            let  Name = await CollegeModel.findOne({name : data.collegeName})
+            if (!Name) return res.status(400).send({status : false, msg: "college not found"})
 
-            if (!mongoose.Types.ObjectId.isValid(ObjectId)) {
-                return res.status(400).send({ status: false, msg: "Invalid CollegeId" });
-            }
-
-            let collegeId = await CollegeModel.findById(ObjectId);
-            if (!collegeId) {
-                return res.status(404).send({ status: false, msg: "The CollegeId is not found" });
-            }
+            data.collegeId = Name._id
 
         }
         else {
